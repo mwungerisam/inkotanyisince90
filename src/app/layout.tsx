@@ -45,9 +45,9 @@ export const metadata: Metadata = {
       "Minimalist luxury fashion from Rwanda. Premium streetwear since 1990.",
   },
   icons: {
-    icon: "/images/logo.png",
-    shortcut: "/images/logo.png",
-    apple: "/images/logo.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
   robots: {
     index: true,
