@@ -8,6 +8,7 @@ export default function Footer() {
     { name: 'ACCESSIBILITY', href: '/accessibility' },
     { name: 'DNSMPI', href: '/dnsmpi' },
     { name: 'COOKIES', href: '/cookies' },
+    { name: 'ORDER STATUS', href: '/order-status' },
   ];
 
   return (

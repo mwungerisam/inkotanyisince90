@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import CartIcon from '@/components/CartIcon';
@@ -16,11 +17,11 @@ export default function Terms() {
           <div className="flex items-center justify-between h-16">
             <button
               onClick={() => router.push('/')}
-              className="text-gray-900 text-3xl hover:text-gray-600 transition-colors"
+              className="back-button text-black hover:text-black transition-colors duration-200 flex items-center justify-center"
               aria-label="Go back"
-              style={{ fontFamily: '"Helvetica Neue", "Arial", sans-serif', fontWeight: 300 }}
+              style={{ width: 52, height: 52, border: 'none', background: 'transparent', padding: 0 }}
             >
-              &lt;
+              <ChevronLeft strokeWidth={2} style={{ width: 22, height: 22 }} />
             </button>
 
             <button
@@ -52,13 +53,13 @@ export default function Terms() {
 
             <h2 className="mb-6 text-gray-900">INTRODUCTION</h2>
             <p className="mb-10 text-gray-700">
-              This website, located at www.inkotanyisince90.rw, is operated by INKOTANYI SINCE 90, ("INKOTANYI SINCE 90," "we," "us," or "our"). These Terms of Service ("Terms") govern your access to and use of the website and any related online, digital, or mobile services, content, and features provided by INKOTANYI SINCE 90 (collectively, the "Service").
+              This website, located at www.inkotanyisince90.com, is operated by INKOTANYISINCE90, (&quot;INKOTANYISINCE90,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). These Terms of Service (&quot;Terms&quot;) govern your access to and use of the website and any related online, digital, or mobile services, content, and features provided by INKOTANYISINCE90 (collectively, the &quot;Service&quot;).
             </p>
             <p className="mb-10 text-gray-700">
               PLEASE READ THESE TERMS CAREFULLY. THESE TERMS CONTAIN IMPORTANT INFORMATION REGARDING YOUR LEGAL RIGHTS, AND OBLIGATIONS, AS WELL AS CONDITIONS, LIMITATIONS, AND EXCLUSIONS THAT MIGHT APPLY TO YOU.
             </p>
             <p className="mb-10 text-gray-700">
-              THESE TERMS REQUIRE THE USE OF ARBITRATION TO RESOLVE DISPUTES, RATHER THAN JURY TRIALS OR CLASS ACTIONS, SUBJECT TO YOUR RIGHT TO OPT-OUT AS DESCRIBED BELOW. BY ACCESSING OUR WEBSITE, YOU AGREE THAT ANY DISPUTE OR CLAIM RELATING IN ANY WAY TO YOUR USE OF OUR SERVICE, OR TO ANY PRODUCTS SOLD OR DISTRIBUTED BY INKOTANYI SINCE 90 WILL BE RESOLVED THROUGH BINDING ARBITRATION, RATHER THAN IN COURT, UNLESS YOU EXERCISE YOUR OPT-OUT RIGHT WITHIN THIRTY (30) DAYS.
+              THESE TERMS REQUIRE THE USE OF ARBITRATION TO RESOLVE DISPUTES, RATHER THAN JURY TRIALS OR CLASS ACTIONS, SUBJECT TO YOUR RIGHT TO OPT-OUT AS DESCRIBED BELOW. BY ACCESSING OUR WEBSITE, YOU AGREE THAT ANY DISPUTE OR CLAIM RELATING IN ANY WAY TO YOUR USE OF OUR SERVICE, OR TO ANY PRODUCTS SOLD OR DISTRIBUTED BY INKOTANYISINCE90 WILL BE RESOLVED THROUGH BINDING ARBITRATION, RATHER THAN IN COURT, UNLESS YOU EXERCISE YOUR OPT-OUT RIGHT WITHIN THIRTY (30) DAYS.
             </p>
             <p className="mb-10 text-gray-700">
               By accessing or using the Service, including by browsing the Website or placing an order, you ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTAND, AND AGREE TO BE BOUND BY THESE TERMS AND OUR PRIVACY POLICY, WHICH IS INCORPORATED BY REFERENCE. IF YOU DO NOT AGREE, DO NOT USE THE SERVICE.
@@ -82,7 +83,7 @@ export default function Terms() {
 
             <h2 className="mb-6 text-gray-900">DESCRIPTION OF THE SERVICE</h2>
             <p className="mb-10 text-gray-700">
-              The Service provides an online platform through which users may browse, purchase, and receive INKOTANYI SINCE 90 branded products, access customer support, and receive communications related to orders, promotions, and updates.
+              The Service provides an online platform through which users may browse, purchase, and receive INKOTANYISINCE90 branded products, access customer support, and receive communications related to orders, promotions, and updates.
             </p>
             <p className="mb-10 text-gray-700">
               We reserve the right to modify, suspend, or discontinue any aspect of the Service, including product offerings, pricing, availability, or features, at any time and without notice.
@@ -131,12 +132,12 @@ export default function Terms() {
 
             <h2 className="mb-6 text-gray-900">COMMUNICATIONS (EMAIL AND SMS)</h2>
             <p className="mb-10 text-gray-700">
-              By providing your email address or phone number, you consent to receive transactional communications related to your orders. You may separately opt-in to receive marketing communications, including via SMS, by providing your express written consent through our opt-in mechanism. Message and data rates may apply. Consent to receive marketing messages is not a condition of purchase. You may revoke consent and opt-out of marketing communications at any time by replying STOP to any message, following in-message unsubscribe links, or by contacting us at contact@inkotanyisince90.rw. Additional details are provided in our Privacy Policy.
+              By providing your email address or phone number, you consent to receive transactional communications related to your orders. You may separately opt-in to receive marketing communications, including via SMS, by providing your express written consent through our opt-in mechanism. Message and data rates may apply. Consent to receive marketing messages is not a condition of purchase. You may revoke consent and opt-out of marketing communications at any time by replying STOP to any message, following in-message unsubscribe links, or by contacting us at contact@inkotanyisince90.com. Additional details are provided in our Privacy Policy.
             </p>
 
             <h2 className="mb-6 text-gray-900">INTELLECTUAL PROPERTY</h2>
             <p className="mb-10 text-gray-700">
-              All content, designs, logos, trademarks, text, graphics, images, and other materials on the Service are owned by or licensed to INKOTANYI SINCE 90 and are protected by intellectual property laws.
+              All content, designs, logos, trademarks, text, graphics, images, and other materials on the Service are owned by or licensed to INKOTANYISINCE90 and are protected by intellectual property laws.
             </p>
             <p className="mb-10 text-gray-700">
               You are granted a limited, non-exclusive, non-transferable, revocable license to access and use the Service for personal, non-commercial purposes only. Any unauthorized use is strictly prohibited and may result in legal action.
@@ -159,7 +160,7 @@ export default function Terms() {
 
             <h2 className="mb-6 text-gray-900">DISCLAIMERS</h2>
             <p className="mb-10 text-gray-700">
-              THE SERVICE AND ALL PRODUCTS ARE PROVIDED "AS IS" AND "AS AVAILABLE," TO THE MAXIMUM EXTENT PERMITTED BY LAW. EXCEPT AS EXPRESSLY PROVIDED IN THESE TERMS OR REQUIRED BY APPLICABLE LAW, INKOTANYI SINCE 90 DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+              THE SERVICE AND ALL PRODUCTS ARE PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE,&quot; TO THE MAXIMUM EXTENT PERMITTED BY LAW. EXCEPT AS EXPRESSLY PROVIDED IN THESE TERMS OR REQUIRED BY APPLICABLE LAW, INKOTANYISINCE90 DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
             </p>
             <p className="mb-10 text-gray-700">
               WE DO NOT GUARANTEE UNINTERRUPTED, ERROR-FREE, OR SECURE OPERATION.
@@ -170,18 +171,18 @@ export default function Terms() {
 
             <h2 className="mb-6 text-gray-900">LIMITATION OF LIABILITY</h2>
             <p className="mb-10 text-gray-700">
-              TO THE MAXIMUM EXTENT PERMITTED BY LAW, INKOTANYI SINCE 90 SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, LOSS OF DATA, OR BUSINESS INTERRUPTION, ARISING OUT OF OR RELATING TO THE SERVICE OR PRODUCTS.
+              TO THE MAXIMUM EXTENT PERMITTED BY LAW, INKOTANYISINCE90 SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, LOSS OF DATA, OR BUSINESS INTERRUPTION, ARISING OUT OF OR RELATING TO THE SERVICE OR PRODUCTS.
             </p>
             <p className="mb-10 text-gray-700">
-              THIS LIMITATION DOES NOT APPLY TO (A) REMEDIES EXPRESSLY PROVIDED FOR DEFECTIVE PRODUCTS UNDER THESE TERMS, (B) PERSONAL INJURY CAUSED BY INKOTANYI SINCE 90'S GROSS NEGLIGENCE, FRAUD, OR WILLFUL MISCONDUCT, OR (C) LIABILITY THAT CAN NOT BE LIMITED UNDER APPLICABLE LAW.
+              THIS LIMITATION DOES NOT APPLY TO (A) REMEDIES EXPRESSLY PROVIDED FOR DEFECTIVE PRODUCTS UNDER THESE TERMS, (B) PERSONAL INJURY CAUSED BY INKOTANYISINCE90&apos;S GROSS NEGLIGENCE, FRAUD, OR WILLFUL MISCONDUCT, OR (C) LIABILITY THAT CAN NOT BE LIMITED UNDER APPLICABLE LAW.
             </p>
             <p className="mb-10 text-gray-700">
-              EXCEPT AS PROHIBITED BY LAW, INKOTANYI SINCE 90'S TOTAL LIABILITY FOR ANY CLAIM ARISING OUT OF OR RELATING TO A PRODUCT SHALL NOT EXCEED THE AMOUNT YOU PAID FOR THE SPECIFIC ORDER GIVING RISE TO THE CLAIM.
+              EXCEPT AS PROHIBITED BY LAW, INKOTANYISINCE90&apos;S TOTAL LIABILITY FOR ANY CLAIM ARISING OUT OF OR RELATING TO A PRODUCT SHALL NOT EXCEED THE AMOUNT YOU PAID FOR THE SPECIFIC ORDER GIVING RISE TO THE CLAIM.
             </p>
 
             <h2 className="mb-6 text-gray-900">INDEMNIFICATION</h2>
             <p className="mb-10 text-gray-700">
-              You agree to indemnify, defend, and hold harmless INKOTANYI SINCE 90 and its affiliates, officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including reasonable attorneys' fees) arising out of your violation of these Terms, misuse of the Service, or violation of law.
+              You agree to indemnify, defend, and hold harmless INKOTANYISINCE90 and its affiliates, officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including reasonable attorneys' fees) arising out of your violation of these Terms, misuse of the Service, or violation of law.
             </p>
 
             <h2 className="mb-6 text-gray-900">DISPUTE RESOLUTION, BINDING ARBITRATION, AND CLASS ACTION WAIVER</h2>
@@ -191,7 +192,7 @@ export default function Terms() {
 
             <h3 className="mb-6 text-gray-900">Informal Resolution Requirement</h3>
             <p className="mb-10 text-gray-700">
-              Before initiating arbitration, you agree to first attempt to resolve any dispute, claim, or controversy arising out of or relating to these Terms, the Service, or any products sold by INKOTANYI SINCE 90 (each, a "Dispute") by contacting us at contact@inkotanyisince90.rw with a written description of the Dispute and your contact information.
+              Before initiating arbitration, you agree to first attempt to resolve any dispute, claim, or controversy arising out of or relating to these Terms, the Service, or any products sold by INKOTANYISINCE90 (each, a &quot;Dispute&quot;) by contacting us at contact@inkotanyisince90.com with a written description of the Dispute and your contact information.
             </p>
             <p className="mb-10 text-gray-700">
               If the Dispute is not resolved within thirty (30) days after receipt of your notice, either party may initiate arbitration as set forth below.
@@ -209,7 +210,7 @@ export default function Terms() {
 
             <h3 className="mb-6 text-gray-900">Class Action and Representative Waiver</h3>
             <p className="mb-10 text-gray-700">
-              YOU AND INKOTANYI SINCE 90 AGREE THAT ALL DISPUTES MUST BE BROUGHT IN AN INDIVIDUAL CAPACITY ONLY.
+              YOU AND INKOTANYISINCE90 AGREE THAT ALL DISPUTES MUST BE BROUGHT IN AN INDIVIDUAL CAPACITY ONLY.
             </p>
             <p className="mb-10 text-gray-700">
               YOU EXPRESSLY WAIVE THE RIGHT TO PARTICIPATE AS A PLAINTIFF OR CLASS MEMBER IN ANY CLASS, COLLECTIVE, PRIVATE ATTORNEY GENERAL, OR REPRESENTATIVE ACTION OR PROCEEDING.
@@ -228,7 +229,7 @@ export default function Terms() {
 
             <h3 className="mb-6 text-gray-900">Opt-Out Right</h3>
             <p className="mb-10 text-gray-700">
-              You have the right to opt-out of this arbitration agreement by sending written notice to contact@inkotanyisince90.rw within thirty (30) days of first accepting these Terms. Your notice must include your full name, mailing address, and a clear statement that you wish to opt-out of arbitration.
+              You have the right to opt-out of this arbitration agreement by sending written notice to contact@inkotanyisince90.com within thirty (30) days of first accepting these Terms. Your notice must include your full name, mailing address, and a clear statement that you wish to opt-out of arbitration.
             </p>
             <p className="mb-10 text-gray-700">
               Opting out of arbitration will not affect any other provision of these Terms.
@@ -261,13 +262,13 @@ export default function Terms() {
 
             <h2 className="mb-6 text-gray-900">CONTACT INFORMATION</h2>
             <p className="mb-10 text-gray-700">
-              To ask questions or comment about this Service or these Terms, contact us by email at contact@inkotanyisince90.rw, phone at +250 789 357 091, or by mail using the details provided below:
+              To ask questions or comment about this Service or these Terms, contact us by email at contact@inkotanyisince90.com, phone at +250 789 357 091, or by mail using the details provided below:
             </p>
             <p className="text-gray-900 font-semibold">
-              INKOTANYI SINCE 90
+              INKOTANYISINCE90
             </p>
             <p className="text-gray-700">
-              INKOTANYI SINCE 90 - Terms of Service
+              INKOTANYISINCE90 - Terms of Service
             </p>
           </div>
         </div>

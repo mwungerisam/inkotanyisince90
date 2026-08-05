@@ -9,6 +9,8 @@ export interface Product {
   sizes: string[];
   isNew?: boolean;
   stock?: number;
+  /** Optional gender classification. Defaults to 'men' when unset. */
+  gender?: 'men' | 'women' | 'unisex';
 }
 
 export interface CartItem {
@@ -24,6 +26,7 @@ export interface Cart {
 
 export interface Order {
   id: string;
+  referenceId?: string;
   items: CartItem[];
   total: number;
   customer: {
@@ -33,7 +36,8 @@ export interface Order {
     address: string;
   };
   paymentMethod: 'mtn';
-  status: 'pending' | 'completed' | 'cancelled';
+  status: 'pending' | 'processing' | 'completed' | 'cancelled';
+  externalId?: string;
   createdAt: Date;
 }
 

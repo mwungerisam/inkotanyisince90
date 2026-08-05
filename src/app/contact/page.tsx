@@ -17,10 +17,11 @@ export default function Contact() {
           <div className="flex items-center justify-between h-24">
             <button
               onClick={() => router.push('/')}
-              className="text-black hover:text-gray-600 transition-colors px-2"
+              className="back-button text-black hover:text-black transition-colors duration-200 flex items-center justify-center"
               aria-label="Go back"
+              style={{ width: 52, height: 52, border: 'none', background: 'transparent', padding: 0 }}
             >
-              <ChevronLeft className="w-6 h-6" strokeWidth={2} />
+              <ChevronLeft strokeWidth={2} style={{ width: 22, height: 22 }} />
             </button>
 
             <button
@@ -54,13 +55,13 @@ export default function Contact() {
 
             <h2 className="mb-6 text-gray-900">ORDER ISSUES</h2>
             <p className="mb-10 text-gray-700">
-              If an item is incorrect or defective, email us at contact@inkotanyisince90.rw and we will take responsibility and resolve it promptly.
+              If an item is incorrect or defective, email us at contact@inkotanyisince90.com and we will take responsibility and resolve it promptly.
             </p>
             <p className="mb-10 text-gray-700">
               Please include your order number and a brief description.
             </p>
 
-            <h2 className="text-gray-900">INKOTANYI SINCE 90- Contact</h2>
+            <h2 className="text-gray-900">INKOTANYISINCE90- Contact</h2>
           </div>
         </div>
       </div>

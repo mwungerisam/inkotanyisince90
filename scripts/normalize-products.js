@@ -1,6 +1,6 @@
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import sharp from 'sharp';
 
 const IMAGES = path.join('public', 'images');
 const OUT = path.join('public', 'products');
@@ -28,8 +28,8 @@ async function findContentBox(inputPath) {
   let maxY = 0;
   let found = false;
 
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
       const i = (y * width + x) * channels;
       const dist = Math.max(255 - data[i], 255 - data[i + 1], 255 - data[i + 2]);
       if (dist > WHITE_THRESH) {
@@ -55,7 +55,7 @@ async function findContentBox(inputPath) {
 
 async function normalizeOne(srcName, outName) {
   const srcPath = path.join(IMAGES, srcName);
-  if (!fs.existsSync(srcPath)) throw new Error('Missing: ' + srcPath);
+  if (!fs.existsSync(srcPath)) throw new Error(`Missing: ${srcPath}`);
 
   const flat = await sharp(srcPath)
     .rotate()
@@ -63,7 +63,7 @@ async function normalizeOne(srcName, outName) {
     .jpeg({ quality: 95 })
     .toBuffer();
 
-  const tmp = path.join(OUT, outName + '.tmp-src.jpg');
+  const tmp = path.join(OUT, `${outName}.tmp-src.jpg`);
   fs.writeFileSync(tmp, flat);
 
   const box = await findContentBox(tmp);
@@ -77,6 +77,7 @@ async function normalizeOne(srcName, outName) {
   let rh = resized.info.height;
   let buffer = resized.data;
   const maxH = Math.round(CANVAS * 0.86);
+
   if (rh > maxH) {
     const capped = await sharp(resized.data)
       .resize({ height: maxH, withoutEnlargement: false })
@@ -107,19 +108,18 @@ async function normalizeOne(srcName, outName) {
 }
 
 (async () => {
-  // remove old tee-* files
-  for (const f of fs.readdirSync(OUT)) {
-    if (f.startsWith('tee-') || f.endsWith('.jpg')) {
-      fs.unlinkSync(path.join(OUT, f));
+  for (const file of fs.readdirSync(OUT)) {
+    if (file.startsWith('tee-') || file.endsWith('.jpg')) {
+      fs.unlinkSync(path.join(OUT, file));
     }
   }
 
-  for (const p of pairs) {
-    await normalizeOne(p.front, `${p.slug}-front.jpg`);
-    await normalizeOne(p.back, `${p.slug}-back.jpg`);
+  for (const pair of pairs) {
+    await normalizeOne(pair.front, `${pair.slug}-front.jpg`);
+    await normalizeOne(pair.back, `${pair.slug}-back.jpg`);
   }
   console.log('DONE');
-})().catch((e) => {
-  console.error(e);
+})().catch((error) => {
+  console.error(error);
   process.exit(1);
 });

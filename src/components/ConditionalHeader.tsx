@@ -2,13 +2,23 @@
 
 'use client';
 
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Header from './Header';
 
 export default function ConditionalHeader() {
   const pathname = usePathname();
-  
-  // Don't show header on product pages, contact page, terms page, privacy page, accessibility page, cart page, and checkout page
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
+  // Don't show header on product pages and dedicated utility flows/pages.
   const isProductPage = pathname.startsWith('/product/');
   const isContactPage = pathname === '/contact';
   const isTermsPage = pathname === '/terms';
@@ -16,10 +26,12 @@ export default function ConditionalHeader() {
   const isAccessibilityPage = pathname === '/accessibility';
   const isCartPage = pathname === '/cart';
   const isCheckoutPage = pathname === '/checkout';
-  
-  if (isProductPage || isContactPage || isTermsPage || isPrivacyPage || isAccessibilityPage || isCartPage || isCheckoutPage) {
+  const isOrderStatusPage = pathname === '/order-status';
+  const isDNSMPIPage = pathname === '/dnsmpi';
+
+  if (isProductPage || isContactPage || isTermsPage || isPrivacyPage || isAccessibilityPage || isCartPage || isCheckoutPage || isOrderStatusPage || isDNSMPIPage) {
     return null;
   }
-  
+
   return <Header />;
 }

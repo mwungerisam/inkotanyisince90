@@ -6,17 +6,12 @@ import { useState } from 'react';
 export default function Cookies() {
   const router = useRouter();
 
-  const [necessaryOpen, setNecessaryOpen] = useState(true);
-  const [analyticsOpen, setAnalyticsOpen] = useState(false);
+
 
   const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
 
-  return (
+return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-      />
       <style>{`
         .cookie-overlay {
           position: fixed;
@@ -318,8 +313,8 @@ export default function Cookies() {
 
               <p className="cookie-description">
                 Contact us at:{' '}
-                <a href="mailto:contact@inkotanyisince90.rw" className="text-gray-900 underline hover:text-gray-700">
-                  contact@inkotanyisince90.rw
+                <a href="mailto:contact@inkotanyisince90.com" className="text-gray-900 underline hover:text-gray-700">
+                  contact@inkotanyisince90.com
                 </a>
               </p>
 

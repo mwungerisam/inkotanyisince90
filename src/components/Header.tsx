@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Plus, X } from 'lucide-react';
+import { ChevronLeft, Plus, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import CartIcon from '@/components/CartIcon';
 
@@ -13,8 +13,14 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { itemCount } = useCart();
+  const isOrderConfirmationPage = pathname === '/order-confirmation';
+  const hideNavLinks = isOrderConfirmationPage;
 
   const navCategories = [
+    { name: 'NEW', href: '/new' },
+    { name: 'MENS', href: '/mens' },
+    { name: 'WOMENS', href: '/womens' },
+    { name: 'ACCESSORIES', href: '/accessories' },
   ];
 
   return (
@@ -23,11 +29,15 @@ export default function Header() {
         <div className="max-w-[1800px] mx-auto px-8 md:px-16 lg:px-20">
           <div className="flex items-center justify-between h-36">
             <button
-              onClick={() => setIsMobileMenuOpen(true)}
+              onClick={() => (isOrderConfirmationPage ? router.push('/') : setIsMobileMenuOpen(true))}
               className="text-gray-900 p-4 hover:bg-gray-50 rounded-lg transition-colors"
-              aria-label="Open menu"
+              aria-label={isOrderConfirmationPage ? 'Go back' : 'Open menu'}
             >
-              <Plus className="w-5 h-5" strokeWidth={2} />
+              {isOrderConfirmationPage ? (
+                <ChevronLeft className="w-5 h-5" strokeWidth={2} />
+              ) : (
+                <Plus className="w-5 h-5" strokeWidth={2} />
+              )}
             </button>
 
             <nav className="hidden md:block">
@@ -35,11 +45,11 @@ export default function Header() {
                 <Link
                   href="/"
                   className="relative block h-9 w-[72px] md:h-10 md:w-[80px]"
-                  aria-label="Inkotanyi Since 90 home"
+                  aria-label="INKOTANYISINCE90 home"
                 >
                   <Image
                     src="/logo.png"
-                    alt="Inkotanyi Since 90"
+                    alt="INKOTANYISINCE90"
                     fill
                     sizes="80px"
                     quality={90}
@@ -47,24 +57,26 @@ export default function Header() {
                     className="object-contain"
                   />
                 </Link>
-                <div className="flex items-center gap-10">
-                  {navCategories.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`text-[10px] uppercase transition-colors hover:text-blue-600 ${
-                        pathname === item.href ? 'text-gray-900' : 'text-gray-500'
-                      }`}
-                      style={{ 
-                        fontFamily: '"Helvetica Neue", "Arial", sans-serif',
-                        fontWeight: pathname === item.href ? 600 : 400,
-                        letterSpacing: '2px'
-                      }}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
+                {!hideNavLinks && (
+                  <div className="flex items-center gap-10">
+                    {navCategories.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={`text-[10px] uppercase transition-colors hover:text-blue-600 ${
+                          pathname === item.href ? 'text-gray-900' : 'text-gray-500'
+                        }`}
+                        style={{ 
+                          fontFamily: '"Helvetica Neue", "Arial", sans-serif',
+                          fontWeight: pathname === item.href ? 600 : 400,
+                          letterSpacing: '2px'
+                        }}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             </nav>
 
@@ -72,11 +84,11 @@ export default function Header() {
             <Link
               href="/"
               className="md:hidden relative block h-8 w-16"
-              aria-label="Inkotanyi Since 90 home"
+              aria-label="INKOTANYISINCE90 home"
             >
               <Image
                 src="/logo.png"
-                alt="Inkotanyi Since 90"
+                alt="INKOTANYISINCE90"
                 fill
                 sizes="64px"
                 quality={90}
@@ -111,11 +123,11 @@ export default function Header() {
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="relative block h-9 w-[72px]"
-                aria-label="Inkotanyi Since 90 home"
+                aria-label="INKOTANYISINCE90 home"
               >
                 <Image
                   src="/logo.png"
-                  alt="Inkotanyi Since 90"
+                  alt="INKOTANYISINCE90"
                   fill
                   sizes="72px"
                   quality={90}

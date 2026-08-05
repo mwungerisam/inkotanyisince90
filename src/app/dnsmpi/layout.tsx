@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { CartProvider } from "@/context/CartContext";
-import CartDrawer from "@/components/CartDrawer";
 
 export const metadata: Metadata = {
-  title: "DNSMPI | INKOTANYI SINCE 90",
+  title: "DNSMPI | INKOTANYISINCE90",
   description: "Do Not Sell or Share My Personal Information",
 };
 
@@ -12,14 +10,7 @@ export default function DNSMPILayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body>
-        <CartProvider>
-          {children}
-          <CartDrawer />
-        </CartProvider>
-      </body>
-    </html>
-  );
+  // Route layouts must NOT render another <html>/<body> or remount providers
+  // already supplied by the root layout. Return children only.
+  return children;
 }

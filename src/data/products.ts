@@ -40,6 +40,7 @@ export const products: Product[] = [
     code: 'IS90-003',
     name: 'INKOTANYI WOMEN',
     price: 8000,
+    gender: 'women',
     description: 'Women\'s cut with the iconic Inkotanyi script. Elegant and powerful.',
     category: 'tshirts',
     images: [
@@ -107,6 +108,7 @@ export const products: Product[] = [
     code: 'IS90-007',
     name: 'INKO WOMEN',
     price: 8000,
+    gender: 'women',
     description: 'Elegant women\'s tee with modern design. Perfect for everyday wear.',
     category: 'tshirts',
     images: [
@@ -130,7 +132,7 @@ export const products: Product[] = [
       '/images/island.front-removebg-preview.png',
       '/images/island.back-removebg-preview.png',
       '/images/island.front-removebg-preview.model.png',
-      '/images/island.back.removebg-preview.model .png',
+      '/images/island.back-removebg-preview.model.png',
     ],
     sizes: ['S', 'M', 'L'],
     isNew: true,
@@ -362,6 +364,7 @@ export const products: Product[] = [
     code: 'IS90-022',
     name: 'INKOTANYI STICKER 1',
     price: 3000,
+    gender: 'unisex',
     description: 'Premium vinyl sticker featuring iconic Inkotanyi design. Perfect for laptops, phones, and more.',
     category: 'accessories',
     images: [
@@ -376,6 +379,7 @@ export const products: Product[] = [
     code: 'IS90-023',
     name: 'INKOTANYI STICKER 2',
     price: 3000,
+    gender: 'unisex',
     description: 'Premium vinyl sticker with bold Inkotanyi graphic. Durable and stylish.',
     category: 'accessories',
     images: [

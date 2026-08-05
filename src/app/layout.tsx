@@ -6,13 +6,47 @@ import { CartProvider } from "@/context/CartContext";
 import ConditionalHeader from "@/components/ConditionalHeader";
 import ConditionalFooter from "@/components/ConditionalFooter";
 import CartDrawer from "@/components/CartDrawer";
+import CartToast from "@/components/CartToast";
+import CookieBanner from "@/components/CookieBanner";
 
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
-  title: "INKOTANYI SINCE 90 | Premium Streetwear",
-  description: "Minimalist luxury fashion from Rwanda. Premium streetwear since 1990.",
-  keywords: ["streetwear", "fashion", "Rwanda", "minimalist", "luxury", "clothing"],
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+  ),
+  title: {
+    default: "INKOTANYISINCE90 | Premium Streetwear",
+    template: "%s | INKOTANYISINCE90",
+  },
+  description:
+    "Minimalist luxury fashion from Rwanda. Premium streetwear since 1990.",
+  keywords: [
+    "streetwear",
+    "fashion",
+    "Rwanda",
+    "minimalist",
+    "luxury",
+    "clothing",
+  ],
+  openGraph: {
+    type: "website",
+    siteName: "INKOTANYISINCE90",
+    title: "INKOTANYISINCE90 | Premium Streetwear",
+    description:
+      "Minimalist luxury fashion from Rwanda. Premium streetwear since 1990.",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "INKOTANYISINCE90 | Premium Streetwear",
+    description:
+      "Minimalist luxury fashion from Rwanda. Premium streetwear since 1990.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -26,12 +60,14 @@ export default function RootLayout({
       className="h-full antialiased"
       style={{ fontFamily: '"Helvetica Neue", "Helvetica", "Arial", sans-serif' }}
     >
-      <body className="min-h-full flex flex-col">
+<body className="min-h-full flex flex-col">
         <CartProvider>
           <ConditionalHeader />
           {children}
           <ConditionalFooter />
           <CartDrawer />
+          <CartToast />
+          <CookieBanner />
         </CartProvider>
       </body>
     </html>

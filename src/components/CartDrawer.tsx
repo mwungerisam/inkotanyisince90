@@ -16,7 +16,7 @@ export default function CartDrawer() {
   );
 
   const handleCheckout = () => {
-    router.push('/checkout');
+    router.push('/cart');
   };
 
   return (
@@ -88,39 +88,36 @@ export default function CartDrawer() {
                           )}
                         </div>
 
-                        <div className="flex-1">
+<div className="flex-1">
                           <h3 className="text-xs font-semibold text-gray-900 mb-0.5">
-                            {item.product.name}
-                          </h3>
-                          <p className="text-[10px] text-gray-500 mb-0.5">
                             {item.product.code}
-                          </p>
+                          </h3>
                           <p className="text-[10px] text-gray-500">
                             Size: {item.size}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
+<div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
                           <button
                             onClick={() =>
                               updateQuantity(item.product.id, item.size, item.quantity - 1)
                             }
-                            className="w-6 h-6 border border-gray-300 flex items-center justify-center rounded-md hover:bg-gray-50 transition-colors text-gray-900"
+                            className="w-8 h-8 border border-gray-300 flex items-center justify-center rounded-md text-gray-900 hover:border-black hover:bg-gray-50 transition-colors"
                             aria-label="Decrease quantity"
                           >
-                            <Minus className="w-3 h-3" strokeWidth={2} />
+                            <Minus className="w-3.5 h-3.5" strokeWidth={2} />
                           </button>
                           <span className="w-6 text-center text-xs font-medium text-gray-900">{item.quantity}</span>
                           <button
                             onClick={() =>
                               updateQuantity(item.product.id, item.size, item.quantity + 1)
                             }
-                            className="w-6 h-6 border border-gray-300 flex items-center justify-center rounded-md hover:bg-gray-50 transition-colors text-gray-900"
+                            className="w-8 h-8 border border-gray-300 flex items-center justify-center rounded-md text-gray-900 hover:border-black hover:bg-gray-50 transition-colors"
                             aria-label="Increase quantity"
                           >
-                            <Plus className="w-3 h-3" strokeWidth={2} />
+                            <Plus className="w-3.5 h-3.5" strokeWidth={2} />
                           </button>
                         </div>
 

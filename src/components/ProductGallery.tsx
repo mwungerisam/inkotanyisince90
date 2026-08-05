@@ -44,8 +44,8 @@ export default function ProductGallery({ images, name, index = 0, onPrevious, on
   };
 
   return (
-    <div className="relative aspect-[3/3.5] bg-white overflow-hidden flex items-center justify-center p-0">
-      <div className="relative w-full h-full max-w-[180px] mx-auto">
+<div className="relative aspect-[3/3.1] w-full bg-white overflow-hidden flex items-center justify-center p-0">
+      <div className="relative h-full w-full max-w-[230px] mx-auto">
         <AnimatePresence mode="wait" custom={direction}>
           {activeImage ? (
             <motion.div
@@ -58,14 +58,14 @@ export default function ProductGallery({ images, name, index = 0, onPrevious, on
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               className="relative w-full h-full"
             >
-              <Image
+<Image
                 src={activeImage}
                 alt={`${name} — view ${index + 1} of ${images.length}`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 quality={95}
                 priority={index === 0}
-                className="object-contain"
+className="object-contain translate-y-10"
               />
             </motion.div>
           ) : (
@@ -82,29 +82,29 @@ export default function ProductGallery({ images, name, index = 0, onPrevious, on
           <button
             type="button"
             onClick={handlePrevious}
-            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 text-black hover:text-gray-600 transition-colors px-2"
+            className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 text-black hover:text-gray-700 transition-colors p-1"
             aria-label="Previous image"
           >
-            <ChevronLeft className="w-6 h-6" strokeWidth={2} />
+            <ChevronLeft className="w-4 h-4" strokeWidth={2.25} />
           </button>
           <button
             type="button"
             onClick={handleNext}
-            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 text-black hover:text-gray-600 transition-colors px-2"
+            className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-black hover:text-gray-700 transition-colors p-1"
             aria-label="Next image"
           >
-            <ChevronRight className="w-6 h-6" strokeWidth={2} />
+            <ChevronRight className="w-4 h-4" strokeWidth={2.25} />
           </button>
         </>
       )}
 
       {/* Pagination Dots */}
       {hasMultipleImages && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1.5">
           {images.map((_, i) => (
             <div
               key={i}
-              className={`w-2 h-2 rounded-full transition-colors ${i === index ? 'bg-black' : 'bg-gray-300'}`}
+              className={`h-[3px] w-[3px] rounded-full transition-colors ${i === index ? 'bg-black' : 'bg-gray-300'}`}
             />
           ))}
         </div>

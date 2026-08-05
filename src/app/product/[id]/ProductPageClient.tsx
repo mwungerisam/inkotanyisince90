@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Product } from '@/types';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import { products } from '@/data/products';
@@ -10,21 +11,17 @@ import { useCart } from '@/context/CartContext';
 import CartIcon from '@/components/CartIcon';
 
 interface ProductPageClientProps {
-  product: any;
+  product: Product;
 }
 
 export default function ProductPageClient({ product }: ProductPageClientProps) {
-  const router = useRouter();
-  const { toggleCart, itemCount } = useCart();
+const router = useRouter();
+  const { itemCount } = useCart();
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isNavigatingRef = useRef(false);
   const accumulatedDeltaRef = useRef(0);
-  const [currentProduct, setCurrentProduct] = useState(product);
+  const currentProduct = product;
   const [galleryIndex, setGalleryIndex] = useState(0);
-
-  useEffect(() => {
-    setCurrentProduct(product);
-  }, [product]);
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -93,8 +90,8 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
               <ChevronLeft className="w-6 h-6" strokeWidth={2} />
             </button>
 
-            <button
-              onClick={toggleCart}
+<button
+              onClick={() => router.push('/cart')}
               className="cart"
               aria-label="Open cart"
             >
@@ -104,8 +101,8 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-start px-4 pt-2 pb-4">
-        <div className="w-full max-w-sm flex flex-col">
+<div className="flex-1 flex flex-col items-center justify-start px-4 pt-48 pb-6 md:pt-52">
+        <div className="w-full max-w-sm flex flex-col items-center">
           <ProductGallery 
             images={currentProduct.images} 
             name={currentProduct.name} 

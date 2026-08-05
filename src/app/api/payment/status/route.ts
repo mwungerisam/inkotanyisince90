@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getPaymentConfig, getRequestToPayStatus, mapMomoStatus } from '@/lib/payment';
+import { updateServerOrderByReference } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
   try {
@@ -12,35 +14,43 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // MTN Mobile Money API Configuration
-    const MTN_API_BASE = process.env.MTN_API_BASE || 'https://sandbox.momodeveloper.mtn.com';
-    const MTN_API_KEY = process.env.MTN_API_KEY;
-    const MTN_API_SECRET = process.env.MTN_API_SECRET;
-    const MERCHANT_ID = process.env.MERCHANT_ID;
+    const paymentConfig = getPaymentConfig();
 
-    if (!MTN_API_KEY || !MTN_API_SECRET || !MERCHANT_ID) {
+    if (!paymentConfig.apiUser || !paymentConfig.apiKey || !paymentConfig.subscriptionKey) {
       return NextResponse.json(
-        { error: 'MTN payment credentials not configured' },
+        {
+          error: 'MTN sandbox credentials are incomplete. Configure API user, API key, and subscription key.',
+          code: 'PAYMENT_CONFIG_MISSING',
+        },
         { status: 500 }
       );
     }
 
-    // In production, you would make an actual API call to MTN MoMo to check payment status
-    // For now, return a mock response
-    
-    console.log('Payment status check for referenceId:', referenceId);
+    const paymentStatus = await getRequestToPayStatus(referenceId);
+    const mappedStatus = mapMomoStatus(paymentStatus.raw?.status as string);
+
+    try {
+      await updateServerOrderByReference(referenceId, {
+        status: mappedStatus === 'successful' ? 'completed' : mappedStatus === 'failed' ? 'cancelled' : 'processing',
+      });
+    } catch (error) {
+      console.error('Failed to update server order status:', error);
+    }
 
     return NextResponse.json({
       success: true,
       referenceId,
-      status: 'pending', // pending, successful, failed
-      message: 'Payment is being processed',
+      status: paymentStatus.status,
+      message: paymentStatus.message,
+      environment: paymentConfig.targetEnvironment,
+      data: paymentStatus.raw,
     });
-
   } catch (error) {
     console.error('Payment status check error:', error);
     return NextResponse.json(
-      { error: 'Failed to check payment status' },
+      {
+        error: error instanceof Error ? error.message : 'Failed to check payment status',
+      },
       { status: 500 }
     );
   }

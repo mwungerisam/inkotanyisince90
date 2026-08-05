@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import CartIcon from '@/components/CartIcon';
@@ -16,11 +17,11 @@ export default function Accessibility() {
           <div className="flex items-center justify-between h-16">
             <button
               onClick={() => router.push('/')}
-              className="text-gray-900 text-3xl hover:text-gray-600 transition-colors"
+              className="back-button text-black hover:text-black transition-colors duration-200 flex items-center justify-center"
               aria-label="Go back"
-              style={{ fontFamily: '"Helvetica Neue", "Arial", sans-serif', fontWeight: 300 }}
+              style={{ width: 52, height: 52, border: 'none', background: 'transparent', padding: 0 }}
             >
-              &lt;
+              <ChevronLeft strokeWidth={2} style={{ width: 22, height: 22 }} />
             </button>
 
             <button
@@ -49,7 +50,7 @@ export default function Accessibility() {
           >
             <h1 className="mb-6 text-gray-900">Accessibility</h1>
             <p className="mb-10 text-gray-700">
-              At INKOTANYI SINCE 90, we are committed to making our website accessible to everyone, including people with disabilities. We continuously work to improve the usability of our website so that all visitors can browse, shop, and access our content with ease.
+              At INKOTANYISINCE90, we are committed to making our website accessible to everyone, including people with disabilities. We continuously work to improve the usability of our website so that all visitors can browse, shop, and access our content with ease.
             </p>
 
             <h2 className="mb-6 text-gray-900">Disclaimer</h2>
@@ -74,7 +75,7 @@ export default function Accessibility() {
 
             <p className="mb-6 text-gray-900 font-semibold">Address</p>
             <p className="mb-10 text-gray-700">
-              INKOTANYI SINCE 90
+              INKOTANYISINCE90
             </p>
             <p className="mb-10 text-gray-700">
               Kigali, Rwanda

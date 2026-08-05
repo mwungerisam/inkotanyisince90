@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import CartIcon from '@/components/CartIcon';
@@ -16,11 +17,11 @@ export default function Privacy() {
           <div className="flex items-center justify-between h-16">
             <button
               onClick={() => router.push('/')}
-              className="text-gray-900 text-3xl hover:text-gray-600 transition-colors"
+              className="back-button text-black hover:text-black transition-colors duration-200 flex items-center justify-center"
               aria-label="Go back"
-              style={{ fontFamily: '"Helvetica Neue", "Arial", sans-serif', fontWeight: 300 }}
+              style={{ width: 52, height: 52, border: 'none', background: 'transparent', padding: 0 }}
             >
-              &lt;
+              <ChevronLeft strokeWidth={2} style={{ width: 22, height: 22 }} />
             </button>
 
             <button
@@ -52,7 +53,7 @@ export default function Privacy() {
 
             <h2 className="mb-6 text-gray-900">INTRODUCTION</h2>
             <p className="mb-10 text-gray-700">
-              At INKOTANYI SINCE 90, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, store, and protect the information you provide when you visit our website, place an order, or communicate with us.
+              At INKOTANYISINCE90, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, store, and protect the information you provide when you visit our website, place an order, or communicate with us.
             </p>
             <p className="mb-10 text-gray-700">
               Our goal is to provide a secure and trustworthy shopping experience. By using our website or purchasing our products, you agree to the practices described in this Privacy Policy.
@@ -318,7 +319,7 @@ export default function Privacy() {
               We encourage you to review the privacy policies of any third-party services you interact with through our website.
             </p>
 
-            <h2 className="mb-6 text-gray-900">CHILDREN'S PRIVACY</h2>
+            <h2 className="mb-6 text-gray-900">CHILDREN&apos;S PRIVACY</h2>
             <p className="mb-10 text-gray-700">
               Our website is intended for a general audience.
             </p>
@@ -353,10 +354,10 @@ export default function Privacy() {
               If you have any questions, concerns, or requests regarding this Privacy Policy or the way we handle your personal information, please contact us.
             </p>
             <p className="mb-10 text-gray-900 font-semibold">
-              INKOTANYI SINCE 90
+              INKOTANYISINCE90
             </p>
             <p className="mb-10 text-gray-700">
-              Email: contact@inkotanyisince90.rw
+              Email: contact@inkotanyisince90.com
             </p>
             <p className="text-gray-700">
               We will make every reasonable effort to respond to your inquiry as quickly as possible.

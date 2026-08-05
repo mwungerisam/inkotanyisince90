@@ -12,9 +12,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   const front = product.images[0];
 
   return (
-    <Link href={`/product/${product.id}`}>
+<Link href={`/product/${product.id}`} className="block group">
       <div className="group cursor-pointer w-full">
-        <div className="relative aspect-square w-full">
+        <div className="relative aspect-square w-full overflow-hidden bg-white">
           {front ? (
             <div className="relative w-full h-full">
               <Image
@@ -23,6 +23,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
                 quality={95}
+                loading="lazy"
+                decoding="async"
                 className="object-contain group-hover:scale-105 transition-transform duration-300"
               />
             </div>
@@ -34,8 +36,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
         </div>
-        <div className="mt-6 text-center">
-          <p className="text-[11px] font-normal tracking-[0.2em] uppercase text-gray-900">
+<div className="mt-4 text-center">
+          <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-gray-900">
             {product.code}
           </p>
         </div>

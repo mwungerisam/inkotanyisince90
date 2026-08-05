@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
@@ -11,6 +11,8 @@ import {
 
 import { useCart } from '@/context/CartContext'
 import CartIcon from '@/components/CartIcon'
+import { Order } from '@/types'
+import { getStoredOrders, saveOrders } from '@/lib/storage'
 
 export default function CartPage() {
   const router = useRouter()
@@ -19,13 +21,13 @@ export default function CartPage() {
     cart,
     itemCount,
     removeFromCart,
-    updateQuantity
+    updateQuantity,
+    clearCart
   } = useCart()
 
-  const [email, setEmail] = useState('')
-  const [paymentMethod, setPaymentMethod] = useState('mtn')
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [paymentError, setPaymentError] = useState('')
+  const [paymentMessage, setPaymentMessage] = useState('')
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -36,15 +38,13 @@ export default function CartPage() {
     country: 'Rwanda',
     postalCode: '',
     phone: '',
+    email: '',
   })
 
   const subtotal = cart.items.reduce(
     (total, item) => total + item.product.price * item.quantity,
     0
   )
-
-  console.log('CartPage - cart.items:', cart.items)
-  console.log('CartPage - itemCount:', itemCount)
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -55,26 +55,49 @@ export default function CartPage() {
     })
   }
 
+  const validateEmail = (value: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
+
+  const validateRwandaPhone = (value: string) => {
+    const normalized = value.replace(/\s+/g, '')
+    return /^\+?2507\d{8}$/.test(normalized) || /^07\d{8}$/.test(normalized)
+  }
+
   const handleCheckout = async () => {
     if (
-      !email ||
+      !formData.email ||
       !formData.firstName ||
       !formData.lastName ||
       !formData.address ||
       !formData.city ||
       !formData.phone
     ) {
-      alert('Please fill in all required fields.')
+      setPaymentError('Please fill in all required fields.')
+      setPaymentMessage('')
+      return
+    }
+
+    if (!validateEmail(formData.email)) {
+      setPaymentError('Please enter a valid email address.')
+      setPaymentMessage('')
+      return
+    }
+
+    if (!validateRwandaPhone(formData.phone)) {
+      setPaymentError('Enter a valid Rwanda MTN phone number starting with 07 or +2507.')
+      setPaymentMessage('')
       return
     }
 
     if (cart.items.length === 0) {
-      alert('Your cart is empty.')
+      setPaymentError('Your cart is empty.')
+      setPaymentMessage('')
       return
     }
 
     setIsProcessingPayment(true)
     setPaymentError('')
+    setPaymentMessage('Sending payment request to your MTN phone...')
 
     try {
       const response = await fetch('/api/payment/initiate', {
@@ -86,10 +109,7 @@ export default function CartPage() {
           amount: subtotal,
           phoneNumber: formData.phone,
           cartItems: cart.items,
-          customerInfo: {
-            email,
-            ...formData,
-          },
+          customerInfo: formData,
         }),
       })
 
@@ -99,26 +119,52 @@ export default function CartPage() {
         throw new Error(data.error || 'Payment initiation failed')
       }
 
+      setPaymentMessage(
+        data.message ||
+          'Payment request sent. In production, the customer should receive a MoMo prompt to enter their PIN.'
+      )
+
       if (data.success) {
-        alert(`Payment initiated! Reference ID: ${data.referenceId}. Please check your phone to authorize the payment.`)
-        // In production, you would redirect to a payment status page
-        // router.push(`/payment/status?referenceId=${data.referenceId}`)
+        const createdAt = new Date()
+        const orderId = data.orderId || `ORD-${createdAt.getTime()}`
+        const order: Order = {
+          id: orderId,
+          referenceId: data.referenceId,
+          externalId: data.externalId,
+          items: cart.items,
+          total: subtotal,
+          customer: {
+            name: `${formData.firstName} ${formData.lastName}`,
+            phone: formData.phone,
+            email: formData.email,
+            address: [formData.address, formData.apartment, formData.city, formData.country, formData.postalCode]
+              .filter(Boolean)
+              .join(', '),
+          },
+          paymentMethod: 'mtn',
+          status: data.status === 'processing' ? 'processing' : 'pending',
+          createdAt,
+        }
+
+        const existingOrders = getStoredOrders()
+        saveOrders([...existingOrders, order])
+
+        await new Promise((resolve) => setTimeout(resolve, 1800))
+
+        clearCart()
+        router.push('/order-confirmation')
       }
     } catch (error) {
       console.error('Payment error:', error)
+      setPaymentMessage('')
       setPaymentError(error instanceof Error ? error.message : 'Payment failed')
-      alert('Payment failed. Please try again.')
     } finally {
       setIsProcessingPayment(false)
     }
   }
 
-  return (
+return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-      />
       <div
         className="min-h-screen bg-white text-black flex flex-col"
         style={{
@@ -159,10 +205,11 @@ export default function CartPage() {
 
       <main className="flex-1 flex items-start justify-center py-6">
 
-        <div
+<div
           className="
           grid
-          grid-cols-[60%_40%]
+          grid-cols-1
+          lg:grid-cols-[60%_40%]
           gap-8
           items-start
           max-w-[1000px]
@@ -177,6 +224,9 @@ export default function CartPage() {
   <h1 className="text-sm font-semibold uppercase tracking-widest mb-10">
     Checkout
   </h1>
+  <p className="text-[10px] uppercase tracking-[0.14em] text-gray-400 -mt-6 mb-8">
+    Review your order details and confirm payment securely.
+  </p>
 
   {/* Payment */}
 
@@ -275,8 +325,9 @@ export default function CartPage() {
     </label>
     <input
       type="email"
-      value={email}
-      onChange={(e)=>setEmail(e.target.value)}
+      name="email"
+      value={formData.email}
+      onChange={handleInputChange}
       className="
       w-full
       h-12
@@ -294,6 +345,7 @@ export default function CartPage() {
       duration-200
       bg-white
       "
+      placeholder="you@example.com"
     />
 
     <label className="flex items-center gap-3 mt-8 text-xs uppercase tracking-wide text-gray-500 cursor-pointer hover:text-black transition-colors duration-200">
@@ -319,7 +371,7 @@ export default function CartPage() {
 
     <div className="space-y-0">
 
-      <div className="grid grid-cols-[35%_65%] gap-4" style={{ marginBottom: '2rem' }}>
+<div className="grid grid-cols-1 sm:grid-cols-[35%_65%] gap-4" style={{ marginBottom: '2rem' }}>
 
         <div>
           <label className="block text-xs uppercase tracking-widest text-gray-500 mb-3 font-medium">
@@ -329,7 +381,7 @@ export default function CartPage() {
             name="firstName"
             value={formData.firstName}
             onChange={handleInputChange}
-            className="border border-gray-200 rounded-md h-12 px-4 text-xs font-normal outline-none focus:border-black focus:bg-white hover:border-gray-300 transition-all duration-200 bg-white"
+            className="w-full border border-gray-200 rounded-md h-12 px-4 text-xs font-normal outline-none focus:border-black focus:bg-white hover:border-gray-300 transition-all duration-200 bg-white"
           />
         </div>
 
@@ -341,7 +393,7 @@ export default function CartPage() {
             name="lastName"
             value={formData.lastName}
             onChange={handleInputChange}
-            className="border border-gray-200 rounded-md h-12 px-4 text-xs font-normal outline-none focus:border-black focus:bg-white hover:border-gray-300 transition-all duration-200 bg-white"
+            className="w-full border border-gray-200 rounded-md h-12 px-4 text-xs font-normal outline-none focus:border-black focus:bg-white hover:border-gray-300 transition-all duration-200 bg-white"
           />
         </div>
 
@@ -383,7 +435,7 @@ export default function CartPage() {
         />
       </div>
 
-      <div className="grid grid-cols-[35%_65%] gap-4" style={{ marginBottom: '2rem' }}>
+<div className="grid grid-cols-1 sm:grid-cols-[35%_65%] gap-4" style={{ marginBottom: '2rem' }}>
 
         <div>
           <label className="block text-xs uppercase tracking-widest text-gray-500 mb-3 font-medium">
@@ -392,7 +444,7 @@ export default function CartPage() {
           <input
             value="Rwanda"
             disabled
-            className="border border-gray-200 rounded-md h-12 px-4 bg-gray-50 text-xs text-gray-500 font-normal"
+            className="w-full border border-gray-200 rounded-md h-12 px-4 bg-gray-50 text-xs text-gray-500 font-normal"
           />
         </div>
 
@@ -404,7 +456,7 @@ export default function CartPage() {
             name="postalCode"
             value={formData.postalCode}
             onChange={handleInputChange}
-            className="border border-gray-200 rounded-md h-12 px-4 text-xs font-normal outline-none focus:border-black focus:bg-white hover:border-gray-300 transition-all duration-200 bg-white"
+            className="w-full border border-gray-200 rounded-md h-12 px-4 text-xs font-normal outline-none focus:border-black focus:bg-white hover:border-gray-300 transition-all duration-200 bg-white"
           />
         </div>
 
@@ -426,6 +478,18 @@ export default function CartPage() {
 
   </section>
 
+  {paymentMessage && !paymentError && (
+    <div className="mt-10 border border-gray-200 bg-gray-50 px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-gray-700">
+      {paymentMessage}
+    </div>
+  )}
+
+  {paymentError && (
+    <div className="mt-10 border border-red-200 bg-red-50 px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-red-700">
+      {paymentError}
+    </div>
+  )}
+
   <button
     onClick={handleCheckout}
     disabled={isProcessingPayment}
@@ -446,7 +510,7 @@ export default function CartPage() {
       disabled:cursor-not-allowed
     "
   >
-    {isProcessingPayment ? 'Processing Payment...' : 'Continue to Payment'}
+    {isProcessingPayment ? 'Check Your Phone...' : 'Continue to Payment'}
   </button>
 
 </div>
@@ -469,31 +533,28 @@ export default function CartPage() {
               </div>
             ) : (
               <>
-                <div className="space-y-6">
+<div className="flex flex-col gap-8">
                   {cart.items.map((item, index) => (
-                    <div key={`${item.product.id}-${item.size}-${index}`} className="flex gap-4 border-b border-gray-100 pb-6">
+                    <div key={`${item.product.id}-${item.size}-${index}`} className="flex gap-4 border-b border-gray-100 pb-8">
                       <div className="relative w-20 h-20 shrink-0 overflow-hidden bg-gray-50 rounded-xl border border-gray-200 shadow-sm">
                         {item.product.images[0] && (
                           <Image src={item.product.images[0]} alt={item.product.name} fill sizes="80px" quality={85} className="object-contain p-2" />
                         )}
                       </div>
-                      <div className="flex-1 pt-1">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-black mb-1.5 leading-tight">
-                          {item.product.name}
-                        </p>
-                        <p className="text-[10px] text-gray-400 mb-1 tracking-[0.14em] uppercase">
+<div className="flex-1 pt-1">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-black mb-1 leading-tight">
                           {item.product.code}
                         </p>
                         <p className="text-[10px] text-gray-500 mb-3 tracking-[0.12em] uppercase">
                           Size: {item.size}
                         </p>
                         <div className="flex items-center gap-2">
-                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity - 1)} className="w-8 h-8 border-2 border-gray-200 flex items-center justify-center hover:border-black hover:shadow-sm transition-all duration-300 bg-white">
-                            <Minus size={12} strokeWidth={1.5} />
+                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity - 1)} className="w-8 h-8 border border-gray-300 flex items-center justify-center text-black hover:border-black hover:bg-gray-50 transition-colors duration-200" aria-label="Decrease quantity">
+                            <Minus size={14} strokeWidth={1.5} />
                           </button>
-                          <span className="w-8 text-center text-[10px] font-medium">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity + 1)} className="w-8 h-8 border-2 border-gray-200 flex items-center justify-center hover:border-black hover:shadow-sm transition-all duration-300 bg-white">
-                            <Plus size={12} strokeWidth={1.5} />
+                          <span className="w-8 text-center text-xs font-medium">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity + 1)} className="w-8 h-8 border border-gray-300 flex items-center justify-center text-black hover:border-black hover:bg-gray-50 transition-colors duration-200" aria-label="Increase quantity">
+                            <Plus size={14} strokeWidth={1.5} />
                           </button>
                         </div>
                       </div>
@@ -520,7 +581,7 @@ export default function CartPage() {
               </>
             )}
             <div className="pt-6 border-t border-gray-100 text-center">
-              <p className="text-[10px] uppercase tracking-wide text-gray-400">INKOTANYI SINCE 90</p>
+              <p className="text-[10px] uppercase tracking-wide text-gray-400">INKOTANYISINCE90</p>
             </div>
           </div>
 

@@ -1,28 +1,26 @@
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import sharp from 'sharp';
 
-const inputDir = path.join(__dirname, '../public/products');
+const inputDir = path.join(process.cwd(), 'public', 'products');
 const files = ['island-front.png', 'island-back.png'];
 
 async function resizeImages() {
   for (const file of files) {
     const inputPath = path.join(inputDir, file);
-    const outputPath = path.join(inputDir, file);
+    const resizedPath = inputPath.replace('.png', '-resized.png');
 
     try {
-      // Resize to match typical t-shirt image dimensions (around 800x1000)
       await sharp(inputPath)
         .resize(800, 1000, {
           fit: 'cover',
-          position: 'center'
+          position: 'center',
         })
-        .toFile(outputPath.replace('.png', '-resized.png'));
+        .toFile(resizedPath);
 
-      // Replace original with resized version
       fs.unlinkSync(inputPath);
-      fs.renameSync(outputPath.replace('.png', '-resized.png'), outputPath);
-      
+      fs.renameSync(resizedPath, inputPath);
+
       console.log(`Resized ${file} successfully`);
     } catch (error) {
       console.error(`Error resizing ${file}:`, error);

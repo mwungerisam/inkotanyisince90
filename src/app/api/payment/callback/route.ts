@@ -1,22 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getPaymentConfig, mapMomoStatus } from '@/lib/payment';
+import { updateServerOrderByReference } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
+  const config = getPaymentConfig();
+  const providedSecret = request.nextUrl.searchParams.get('secret');
+
+  if (config.callbackSecret && providedSecret !== config.callbackSecret) {
+    console.error('Invalid callback secret provided');
+    return NextResponse.json(
+      { error: 'Unauthorized callback request' },
+      { status: 403 }
+    );
+  }
+
   try {
     const body = await request.json();
-    
-    // MTN Mobile Money will send a callback with payment status
-    // The structure depends on MTN's API specification
     const { referenceId, status, transactionId, amount, phoneNumber } = body;
 
-    console.log('Payment callback received:', {
-      referenceId,
-      status,
-      transactionId,
-      amount,
-      phoneNumber,
-    });
-
-    // Validate the callback (in production, you should verify the signature)
     if (!referenceId || !status) {
       return NextResponse.json(
         { error: 'Invalid callback data' },
@@ -24,29 +25,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update payment status in your database
-    // For now, we'll just log it. In production, you would:
-    // 1. Find the order by referenceId
-    // 2. Update the order status based on the callback
-    // 3. Send confirmation email to customer
-    // 4. Clear the cart if payment is successful
+    const mappedStatus = mapMomoStatus(status);
+    const orderStatus = mappedStatus === 'successful' ? 'completed' : mappedStatus === 'failed' ? 'cancelled' : 'processing';
 
-    if (status === 'successful') {
-      console.log(`Payment successful for referenceId: ${referenceId}`);
-      // Here you would:
-      // - Update order status to 'paid'
-      // - Send confirmation email
-      // - Trigger order fulfillment
-    } else if (status === 'failed') {
-      console.log(`Payment failed for referenceId: ${referenceId}`);
-      // Here you would:
-      // - Update order status to 'failed'
-      // - Notify customer of payment failure
-    }
+    const updatedOrder = await updateServerOrderByReference(referenceId, {
+      status: orderStatus,
+    });
 
-    // Return 200 to acknowledge receipt of callback
-    return NextResponse.json({ success: true });
+    console.log('Payment callback received:', {
+      referenceId,
+      status,
+      mappedStatus,
+      updatedOrderExists: Boolean(updatedOrder),
+      transactionId,
+      amount,
+      phoneNumber,
+    });
 
+    return NextResponse.json({
+      success: true,
+      referenceId,
+      received: true,
+      status,
+      updatedOrderExists: Boolean(updatedOrder),
+    });
   } catch (error) {
     console.error('Payment callback error:', error);
     return NextResponse.json(

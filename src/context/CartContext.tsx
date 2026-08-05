@@ -1,41 +1,48 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import { Cart, CartItem, Product } from '@/types';
+import { Cart, Product } from '@/types';
+import { getStoredCart, saveCart } from '@/lib/storage';
+
+export interface LastAddedItem {
+  code: string;
+  name: string;
+  size: string;
+  quantity: number;
+  timestamp: number;
+}
 
 interface CartContextType {
   cart: Cart;
   itemCount: number;
+  lastAdded: LastAddedItem | null;
   addToCart: (product: Product, size: string, quantity: number) => void;
   removeFromCart: (productId: string, size: string) => void;
   updateQuantity: (productId: string, size: string, quantity: number) => void;
   toggleCart: () => void;
   clearCart: () => void;
+  dismissToast: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
+  // Hydration-safe: start with an empty cart on the server, then load the
+  // persisted cart from localStorage inside useEffect to avoid hydration mismatches.
   const [cart, setCart] = useState<Cart>({ items: [], isOpen: false });
+  const [lastAdded, setLastAdded] = useState<LastAddedItem | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
-  // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('inkotanyi-cart');
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart);
-        setCart(parsedCart);
-      } catch (error) {
-        console.error('Error parsing cart from localStorage:', error);
-        setCart({ items: [], isOpen: false });
-      }
-    }
+    setCart(getStoredCart());
+    setHydrated(true);
   }, []);
 
-  // Save cart to localStorage on change
   useEffect(() => {
-    localStorage.setItem('inkotanyi-cart', JSON.stringify(cart));
-  }, [cart]);
+    if (hydrated) {
+      saveCart(cart);
+    }
+  }, [cart, hydrated]);
 
   const itemCount = useMemo(() => {
     return cart.items.reduce(
@@ -45,7 +52,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cart.items]);
 
   const addToCart = (product: Product, size: string, quantity: number) => {
-    console.log('addToCart called with:', product.id, size, quantity);
     setCart((prev) => {
       const existingItem = prev.items.find(
         (item) => item.product.id === product.id && item.size === size
@@ -60,7 +66,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               : item
           ),
         };
-        console.log('Cart updated (existing item):', newCart);
         return newCart;
       }
 
@@ -68,8 +73,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         ...prev,
         items: [...prev.items, { product, quantity, size }],
       };
-      console.log('Cart updated (new item):', newCart);
       return newCart;
+    });
+
+    setLastAdded({
+      code: product.code,
+      name: product.name,
+      size,
+      quantity,
+      timestamp: Date.now(),
     });
   };
 
@@ -106,16 +118,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setCart({ items: [], isOpen: false });
   };
 
+  const dismissToast = () => {
+    setLastAdded(null);
+  };
+
   return (
     <CartContext.Provider
       value={{
         cart,
         itemCount,
+        lastAdded,
         addToCart,
         removeFromCart,
         updateQuantity,
         toggleCart,
         clearCart,
+        dismissToast,
       }}
     >
       {children}

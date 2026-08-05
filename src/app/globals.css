@@ -3,11 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
-  --primary: #2563EB;
-  --primary-hover: #1d4ed8;
-  --muted: #64748b;
-  --muted-light: #f1f5f9;
-  --border: #e2e8f0;
+  --primary: #000000;
+  --primary-hover: #1a1a1a;
+  --muted: #6b7280;
+  --muted-light: #f3f4f6;
+  --border: #e5e7eb;
   --card-bg: #ffffff;
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -16,13 +16,19 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
+  --font-sans: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -42,6 +48,7 @@ html {
 img {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
 button {
@@ -56,6 +63,24 @@ button {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+/* Accessible, consistent focus ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--primary, #000000);
+  outline-offset: 2px;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @keyframes fade-in-up {
@@ -94,35 +119,44 @@ a {
 
 .cart {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
+  padding: 0;
   cursor: pointer;
   user-select: none;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border-radius: 16px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  color: #111;
+  transition: color 0.2s ease, transform 0.15s ease;
 }
 
 .cart:hover {
-  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: transparent;
+  color: #000;
+  transform: translateY(-1px);
+  box-shadow: none;
+  border-color: transparent;
 }
 
 .cart:active {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .cart svg {
-  width: 24px;
-  height: 24px;
-  color: #1a1a1a;
-  transition: all 0.3s ease;
+  width: 22px;
+  height: 22px;
+  color: currentColor;
+  transition: color 0.2s ease;
+}
+
+/* Ensure full-width images inside flex/grid never cause horizontal scroll */
+.relative img,
+.aspect-square img {
+  max-width: 100%;
 }
