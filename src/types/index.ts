@@ -36,6 +36,7 @@ export interface Order {
     address: string;
   };
   paymentMethod: 'mtn';
+  paymentEnvironment?: 'sandbox' | 'live';
   status: 'pending' | 'processing' | 'completed' | 'cancelled';
   externalId?: string;
   createdAt: Date;

@@ -55,6 +55,19 @@ export default function OrderConfirmationPage() {
   const effectiveStatus = paymentStatus ? mapPaymentStatusToOrderStatus(paymentStatus) : latestOrder?.status;
   const statusLabel = effectiveStatus ? statusLabelMap[effectiveStatus] : 'Processing';
   const statusTone = effectiveStatus ? statusToneMap[effectiveStatus] : 'bg-black';
+  const isSandboxPayment = latestOrder?.paymentEnvironment === 'sandbox';
+  const isPaymentComplete = effectiveStatus === 'completed';
+  const isPaymentUnsuccessful = effectiveStatus === 'cancelled';
+  const confirmationTitle = isPaymentComplete
+    ? 'Your payment is confirmed.'
+    : isPaymentUnsuccessful
+      ? 'Your payment was not completed.'
+      : 'Complete your payment to confirm your order.';
+  const confirmationMessage = isPaymentComplete
+    ? 'Thank you for shopping with INKOTANYISINCE90. We have received your payment and will begin preparing your order.'
+    : isPaymentUnsuccessful
+      ? 'Your order has been saved, but payment was not completed. Please return to your cart to try again, or contact us if you need help.'
+      : 'Your order has been received. Please complete the payment request on your phone to confirm it. Keep your order ID and payment reference for your records.';
   const placedAt = latestOrder
     ? new Date(latestOrder.createdAt).toLocaleString('en-RW', {
         year: 'numeric',
@@ -132,12 +145,10 @@ export default function OrderConfirmationPage() {
                 Order Confirmation
               </p>
               <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-black mb-4">
-                Thank you for your order.
+                {confirmationTitle}
               </h1>
               <p className="max-w-2xl text-sm md:text-base text-gray-600 leading-7">
-                Your payment request has been created successfully. In MTN sandbox, payments are tracked by
-                status updates instead of a real PIN prompt on the phone, so keep this page or your order ID
-                nearby while the transaction is being checked.
+                {confirmationMessage}
               </p>
             </div>
 
@@ -178,10 +189,15 @@ export default function OrderConfirmationPage() {
                 )}
               </div>
               <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                <p className="text-[10px] uppercase tracking-[0.18em] text-gray-500 mb-2">Sandbox Payment Flow</p>
+                <p className="text-[10px] uppercase tracking-[0.18em] text-gray-500 mb-2">Payment Authorization</p>
                 <p className="text-sm text-gray-600 leading-7">
-                  MTN sandbox does not send a live payment prompt to a real phone. Use the payment reference and
-                  order status tools to follow the request state until it becomes successful or failed.
+                  {isPaymentComplete
+                    ? 'Payment has been received. You do not need to take any further action; we will keep you updated as your order is prepared.'
+                    : isPaymentUnsuccessful
+                      ? 'No payment was received for this order. Return to your cart to submit a new payment request when you are ready.'
+                      : isSandboxPayment
+                    ? 'This order is using MTN sandbox. Sandbox transactions do not send a PIN prompt to a real phone; use the payment reference to monitor the request status.'
+                    : 'Please check your MTN phone and authorize the payment with your MoMo PIN. You can refresh this page or use order tracking to follow the payment status.'}
                 </p>
               </div>
               {(statusMessage || isCheckingStatus) && (
@@ -192,10 +208,26 @@ export default function OrderConfirmationPage() {
                   </p>
                 </div>
               )}
-              <ul className="space-y-3 text-sm text-gray-600 leading-7">
-                <li>• Use your order ID to track progress from the order status page.</li>
-                <li>• Use the payment reference below when checking the MTN transaction status.</li>
-                <li>• Our team will confirm and prepare your order after payment verification.</li>
+              <ul className="space-y-3 text-sm text-gray-600 leading-7 list-disc list-inside">
+                {isPaymentComplete ? (
+                  <>
+                    <li>Your payment has been confirmed.</li>
+                    <li>We will prepare your order and keep you updated.</li>
+                    <li>Use your order ID if you need to contact us about this order.</li>
+                  </>
+                ) : isPaymentUnsuccessful ? (
+                  <>
+                    <li>Return to your cart when you are ready to try payment again.</li>
+                    <li>Use your order ID and payment reference if you need help.</li>
+                    <li>Contact us if you believe the payment was completed.</li>
+                  </>
+                ) : (
+                  <>
+                    <li>Approve the payment request on your MTN phone.</li>
+                    <li>Refresh this page or use order tracking to check the payment status.</li>
+                    <li>We will prepare your order once payment is confirmed.</li>
+                  </>
+                )}
               </ul>
               {placedAt && (
                 <div className="pt-2">
@@ -256,10 +288,10 @@ export default function OrderConfirmationPage() {
               <h2 className="text-xl font-semibold text-black mb-4">Next Actions</h2>
               <div className="space-y-3">
                 <button
-                  onClick={() => router.push('/')}
+                  onClick={() => router.push(isPaymentUnsuccessful ? '/cart' : '/')}
                   className="w-full bg-black text-white py-3 text-sm font-medium hover:bg-gray-800 transition-colors rounded-xl"
                 >
-                  Continue Shopping
+                  {isPaymentUnsuccessful ? 'Return to Cart' : 'Continue Shopping'}
                 </button>
                 <Link
                   href="/order-status"
@@ -281,8 +313,8 @@ export default function OrderConfirmationPage() {
             <section className="border border-gray-200 rounded-2xl p-7 md:p-8 bg-white">
               <h2 className="text-xl font-semibold text-black mb-4">Need Help?</h2>
               <p className="text-sm text-gray-600 leading-7 mb-5">
-                If you have any questions about your order, share your order ID and payment reference with our
-                support team through WhatsApp for faster help.
+                If you need help with your order or payment, have your order ID and payment reference ready when
+                you contact us.
               </p>
               <a
                 href="https://chat.whatsapp.com/Cb22N7qdbKBI1daglO2o8E"

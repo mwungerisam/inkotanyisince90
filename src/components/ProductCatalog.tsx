@@ -5,6 +5,7 @@ import ProductGrid from '@/components/ProductGrid';
 
 import { Product } from '@/types';
 import { getStoredProducts } from '@/lib/storage';
+import { useProductView } from '@/context/ProductViewContext';
 
 interface ProductCatalogProps {
   category?: Product['category'];
@@ -15,6 +16,7 @@ export default function ProductCatalog({ category, newOnly = false }: ProductCat
   // Hydration-safe: start with the shipped catalogue, then load any admin-overridden
   // products from localStorage inside useEffect to avoid hydration mismatches.
   const [products, setProducts] = useState<Product[]>(() => getStoredProducts());
+  const { isExpanded } = useProductView();
 
   useEffect(() => {
     setProducts(getStoredProducts());
@@ -32,5 +34,5 @@ export default function ProductCatalog({ category, newOnly = false }: ProductCat
     return true;
   });
 
-  return <ProductGrid products={filteredProducts} />;
+  return <ProductGrid products={filteredProducts} isExpanded={!category && !newOnly && isExpanded} />;
 }

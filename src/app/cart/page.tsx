@@ -4,9 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
-  ChevronLeft,
-  Plus,
-  Minus
+  ChevronLeft
 } from 'lucide-react'
 
 import { useCart } from '@/context/CartContext'
@@ -142,6 +140,7 @@ export default function CartPage() {
               .join(', '),
           },
           paymentMethod: 'mtn',
+          paymentEnvironment: data.environment === 'live' ? 'live' : 'sandbox',
           status: data.status === 'processing' ? 'processing' : 'pending',
           createdAt,
         }
@@ -371,7 +370,7 @@ return (
 
     <div className="space-y-0">
 
-<div className="grid grid-cols-1 sm:grid-cols-[35%_65%] gap-4" style={{ marginBottom: '2rem' }}>
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ marginBottom: '2rem' }}>
 
         <div>
           <label className="block text-xs uppercase tracking-widest text-gray-500 mb-3 font-medium">
@@ -435,7 +434,7 @@ return (
         />
       </div>
 
-<div className="grid grid-cols-1 sm:grid-cols-[35%_65%] gap-4" style={{ marginBottom: '2rem' }}>
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ marginBottom: '2rem' }}>
 
         <div>
           <label className="block text-xs uppercase tracking-widest text-gray-500 mb-3 font-medium">
@@ -474,6 +473,30 @@ return (
         />
       </div>
 
+      <div className="h-8" aria-hidden="true" />
+
+      <button
+        onClick={handleCheckout}
+        disabled={isProcessingPayment}
+        className="
+          w-full
+          h-12
+          bg-black
+          text-white
+          uppercase
+          tracking-widest
+          text-xs
+          font-normal
+          hover:bg-gray-900
+          transition-all
+          duration-200
+          disabled:opacity-50
+          disabled:cursor-not-allowed
+        "
+      >
+        {isProcessingPayment ? 'Check Your Phone...' : 'Continue to Payment'}
+      </button>
+
     </div>
 
   </section>
@@ -489,29 +512,6 @@ return (
       {paymentError}
     </div>
   )}
-
-  <button
-    onClick={handleCheckout}
-    disabled={isProcessingPayment}
-    className="
-      w-full
-      h-12
-      mt-16
-      bg-black
-      text-white
-      uppercase
-      tracking-widest
-      text-xs
-      font-normal
-      hover:bg-gray-900
-      transition-all
-      duration-200
-      disabled:opacity-50
-      disabled:cursor-not-allowed
-    "
-  >
-    {isProcessingPayment ? 'Check Your Phone...' : 'Continue to Payment'}
-  </button>
 
 </div>
 
@@ -549,12 +549,12 @@ return (
                           Size: {item.size}
                         </p>
                         <div className="flex items-center gap-2">
-                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity - 1)} className="w-8 h-8 border border-gray-300 flex items-center justify-center text-black hover:border-black hover:bg-gray-50 transition-colors duration-200" aria-label="Decrease quantity">
-                            <Minus size={14} strokeWidth={1.5} />
+                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity - 1)} className="flex h-7 w-7 items-center justify-center text-base font-normal leading-none text-black hover:text-gray-500 transition-colors duration-200" aria-label="Decrease quantity">
+                            −
                           </button>
-                          <span className="w-8 text-center text-xs font-medium">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity + 1)} className="w-8 h-8 border border-gray-300 flex items-center justify-center text-black hover:border-black hover:bg-gray-50 transition-colors duration-200" aria-label="Increase quantity">
-                            <Plus size={14} strokeWidth={1.5} />
+                          <span className="w-7 text-center text-xs font-medium">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity + 1)} className="flex h-7 w-7 items-center justify-center text-base font-normal leading-none text-black hover:text-gray-500 transition-colors duration-200" aria-label="Increase quantity">
+                            +
                           </button>
                         </div>
                       </div>
@@ -575,7 +575,6 @@ return (
                 <div className="border-t border-gray-100 pt-6 space-y-4">
                   <div className="flex justify-between text-[10px]"><span className="uppercase tracking-wide text-gray-500">Subtotal</span><span className="font-semibold">{subtotal.toLocaleString()} RWF</span></div>
                   <div className="flex justify-between text-[10px]"><span className="uppercase tracking-wide text-gray-500">Shipping</span><span className="text-gray-500">Calculated at next step</span></div>
-                  <div className="flex justify-between text-[10px]"><span className="uppercase tracking-wide text-gray-500">Taxes</span><span className="text-gray-500">Calculated at next step</span></div>
                   <div className="flex justify-between text-xs font-semibold border-t border-gray-100 pt-4 mt-4"><span className="uppercase tracking-wide">Total</span><span>{subtotal.toLocaleString()} RWF</span></div>
                 </div>
               </>

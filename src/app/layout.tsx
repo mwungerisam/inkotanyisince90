@@ -3,6 +3,7 @@ import "./globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { CartProvider } from "@/context/CartContext";
+import { ProductViewProvider } from "@/context/ProductViewContext";
 import ConditionalHeader from "@/components/ConditionalHeader";
 import ConditionalFooter from "@/components/ConditionalFooter";
 import CartDrawer from "@/components/CartDrawer";
@@ -61,14 +62,16 @@ export default function RootLayout({
       style={{ fontFamily: '"Helvetica Neue", "Helvetica", "Arial", sans-serif' }}
     >
 <body className="min-h-full flex flex-col">
-        <CartProvider>
-          <ConditionalHeader />
-          {children}
-          <ConditionalFooter />
-          <CartDrawer />
-          <CartToast />
-          <CookieBanner />
-        </CartProvider>
+        <ProductViewProvider>
+          <CartProvider>
+            <ConditionalHeader />
+            {children}
+            <ConditionalFooter />
+            <CartDrawer />
+            <CartToast />
+            <CookieBanner />
+          </CartProvider>
+        </ProductViewProvider>
       </body>
     </html>
   );

@@ -1,83 +1,67 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChevronLeft, Plus, X } from 'lucide-react';
+import { ChevronLeft, Plus } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useProductView } from '@/context/ProductViewContext';
 import CartIcon from '@/components/CartIcon';
 
 export default function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { itemCount } = useCart();
+  const { isExpanded, toggleProductView } = useProductView();
   const isOrderConfirmationPage = pathname === '/order-confirmation';
-  const hideNavLinks = isOrderConfirmationPage;
 
-  const navCategories = [
-    { name: 'NEW', href: '/new' },
-    { name: 'MENS', href: '/mens' },
-    { name: 'WOMENS', href: '/womens' },
-    { name: 'ACCESSORIES', href: '/accessories' },
-  ];
+  const handleProductViewToggle = () => {
+    toggleProductView();
+
+    if (pathname !== '/') {
+      router.push('/');
+    }
+  };
 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-white">
         <div className="max-w-[1800px] mx-auto px-8 md:px-16 lg:px-20">
           <div className="flex items-center justify-between h-36">
-            <button
-              onClick={() => (isOrderConfirmationPage ? router.push('/') : setIsMobileMenuOpen(true))}
-              className="text-gray-900 p-4 hover:bg-gray-50 rounded-lg transition-colors"
-              aria-label={isOrderConfirmationPage ? 'Go back' : 'Open menu'}
-            >
-              {isOrderConfirmationPage ? (
+            {isOrderConfirmationPage ? (
+              <button
+                onClick={() => router.push('/')}
+                className="text-gray-900 p-4 hover:bg-gray-50 rounded-lg transition-colors"
+                aria-label="Go back"
+              >
                 <ChevronLeft className="w-5 h-5" strokeWidth={2} />
-              ) : (
+              </button>
+            ) : (
+              <button
+                onClick={handleProductViewToggle}
+                className="text-gray-900 p-4 hover:bg-gray-50 rounded-lg transition-colors"
+                aria-label={isExpanded ? 'Show standard product view' : 'Show larger product view'}
+              >
                 <Plus className="w-5 h-5" strokeWidth={2} />
-              )}
-            </button>
+              </button>
+            )}
 
             <nav className="hidden md:block">
-              <div className="flex flex-col items-center gap-4">
-                <Link
-                  href="/"
-                  className="relative block h-9 w-[72px] md:h-10 md:w-[80px]"
-                  aria-label="INKOTANYISINCE90 home"
-                >
-                  <Image
-                    src="/logo.png"
-                    alt="INKOTANYISINCE90"
-                    fill
-                    sizes="80px"
-                    quality={90}
-                    priority
-                    className="object-contain"
-                  />
-                </Link>
-                {!hideNavLinks && (
-                  <div className="flex items-center gap-10">
-                    {navCategories.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={`text-[10px] uppercase transition-colors hover:text-blue-600 ${
-                          pathname === item.href ? 'text-gray-900' : 'text-gray-500'
-                        }`}
-                        style={{ 
-                          fontFamily: '"Helvetica Neue", "Arial", sans-serif',
-                          fontWeight: pathname === item.href ? 600 : 400,
-                          letterSpacing: '2px'
-                        }}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <Link
+                href="/"
+                className="relative block h-9 w-[72px] md:h-10 md:w-[80px]"
+                aria-label="INKOTANYISINCE90 home"
+              >
+                <Image
+                  src="/logo.png"
+                  alt="INKOTANYISINCE90"
+                  fill
+                  sizes="80px"
+                  quality={90}
+                  priority
+                  className="object-contain"
+                />
+              </Link>
             </nav>
 
             {/* Mobile logo */}
@@ -107,63 +91,6 @@ export default function Header() {
           </div>
         </div>
       </header>
-
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-white">
-          <div className="max-w-[1800px] mx-auto px-8 md:px-16 lg:px-20">
-            <div className="flex items-center justify-between h-36">
-              <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-900 p-4 hover:bg-gray-50 rounded-lg transition-colors"
-                aria-label="Close menu"
-              >
-                <X className="w-5 h-5" strokeWidth={2} />
-              </button>
-              <Link
-                href="/"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative block h-9 w-[72px]"
-                aria-label="INKOTANYISINCE90 home"
-              >
-                <Image
-                  src="/logo.png"
-                  alt="INKOTANYISINCE90"
-                  fill
-                  sizes="72px"
-                  quality={90}
-                  className="object-contain"
-                />
-              </Link>
-              <div className="w-16" />
-            </div>
-
-            <nav className="pt-24">
-              <div className="flex flex-col items-center gap-8">
-                <ul className="flex flex-col items-center gap-8">
-                  {navCategories.map((item) => (
-                    <li key={item.name} className="w-full">
-                      <Link
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`block text-center text-[10px] uppercase py-4 transition-colors hover:text-blue-600 ${
-                          pathname === item.href ? 'text-gray-900' : 'text-gray-400'
-                        }`}
-                        style={{ 
-                          fontFamily: '"Helvetica Neue", "Arial", sans-serif',
-                          fontWeight: pathname === item.href ? 600 : 400,
-                          letterSpacing: '2px'
-                        }}
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </nav>
-          </div>
-        </div>
-      )}
     </>
   );
 }

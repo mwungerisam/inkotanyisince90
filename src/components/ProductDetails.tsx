@@ -76,6 +76,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             className={`flex flex-col items-center w-full relative ${
               isAnimating ? 'animate-fade-in-up' : ''
             }`}
+            style={{ fontFamily: '"Courier Prime", "Courier New", Courier, monospace' }}
           >
             {/* Top row with icons and SELECT SIZE */}
             <div className="flex items-center justify-between w-full mb-12">
@@ -88,7 +89,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 ?
               </button>
 
-              <p className="text-sm font-bold text-gray-900 uppercase tracking-[0.15em]">
+              <p className="text-xs font-medium text-gray-900 uppercase tracking-[0.12em]">
                 SELECT SIZE
               </p>
 
@@ -102,7 +103,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             </div>
 
             {/* Price */}
-            <p className="text-base font-medium text-gray-900 tracking-tight mb-12">
+            <p className="text-sm font-normal text-gray-900 tracking-tight mb-12">
               RWF {product.price.toLocaleString()}
             </p>
 
@@ -115,7 +116,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                     onClick={() => handleSizeSelect(size)}
                     onMouseEnter={() => setHoveredSize(index)}
                     onMouseLeave={() => setHoveredSize(null)}
-                    className="text-sm font-bold text-gray-900 hover:text-blue-600 transition-colors rounded-lg p-2 hover:bg-blue-50 min-w-10"
+                    className="min-w-8 rounded p-1.5 text-xs font-normal text-black transition-colors hover:bg-transparent hover:text-black"
                   >
                     {(hoveredSize === index || hoverInfo) ? size : numberSizes[index] || size}
                   </button>
@@ -123,10 +124,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               </div>
             </div>
 
-            {/* Information */}
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.15em]">
-              {selectedSize ? `${selectedSize} READY` : 'INFORMATION'}
-            </p>
           </div>
         )}
       </div>
