@@ -236,3 +236,15 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
 > **Security:** `SUPABASE_SERVICE_ROLE_KEY` is a server-only secret. It is used only in API routes / server-side libs (`src/lib/supabase.ts`) and must never be exposed to the browser. Never add a `NEXT_PUBLIC_` prefix to it.
+
+## Favicons
+
+- **Files added/updated:** [public/favicon.svg](public/favicon.svg), [public/favicon.ico](public/favicon.ico), generated PNGs (`favicon-16x16.png`, `favicon-32x32.png`, `favicon-48x48.png`, `favicon-64x64.png`, `favicon-128x128.png`, `favicon-256x256.png`), [public/site.webmanifest](public/site.webmanifest), [public/safari-pinned-tab.svg](public/safari-pinned-tab.svg). The app head was updated at [src/app/head.tsx](src/app/head.tsx#L1-L20).
+- **Regenerate favicons:** edit `public/favicon.svg` (the canonical source) and run:
+
+```bash
+npm install
+npm run generate:favicons
+```
+
+- **Notes:** The SVG is the single source of truth; the generator creates PNGs and a multi-size ICO for compatibility. `site.webmanifest` and `safari-pinned-tab.svg` enable PWA and Safari pinned-tab support.

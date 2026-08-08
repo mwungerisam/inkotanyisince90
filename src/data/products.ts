@@ -5,7 +5,7 @@ export const products: Product[] = [
     id: '1',
     code: 'IS90-001',
     name: 'INKOTANYI SCRIPT',
-    price: 18000,
+    price: 16000,
     description: 'Clean white tee with signature Inkotanyi script on the chest. Understated and refined.',
     category: 'tshirts',
     images: [
@@ -22,7 +22,7 @@ export const products: Product[] = [
     id: '2',
     code: 'IS90-002',
     name: 'INKOTANYI ATHLETE',
-    price: 18000,
+    price: 16000,
     description: 'Athletic version of the classic Inkotanyi script. Performance-ready design.',
     category: 'tshirts',
     images: [
@@ -57,7 +57,7 @@ export const products: Product[] = [
     id: '4',
     code: 'IS90-004',
     name: 'SINCE 90',
-    price: 18000,
+    price: 16000,
     description: 'Bold heritage graphic on white cotton. A statement piece rooted in 1990.',
     category: 'tshirts',
     images: [
@@ -74,7 +74,7 @@ export const products: Product[] = [
     id: '5',
     code: 'IS90-005',
     name: 'URUGWIRO',
-    price: 18000,
+    price: 16000,
     description: 'Black tee featuring the iconic Inkotanyi collective graphic. Timeless streetwear.',
     category: 'tshirts',
     images: [
@@ -90,7 +90,7 @@ export const products: Product[] = [
     id: '6',
     code: 'IS90-006',
     name: 'I FEEL LIKE INKOTANYI',
-    price: 18000,
+    price: 16000,
     description: 'Black letter chest print. Confidence in every wear.',
     category: 'tshirts',
     images: [
@@ -125,7 +125,7 @@ export const products: Product[] = [
     id: '8',
     code: 'IS90-008',
     name: 'ISLAND',
-    price: 18000,
+    price: 16000,
     description: 'Premium island-inspired design. Stand out from the crowd.',
     category: 'tshirts',
     images: [
@@ -142,7 +142,7 @@ export const products: Product[] = [
     id: '9',
     code: 'IS90-009',
     name: 'INKOTANYI LEGACY',
-    price: 18000,
+    price: 16000,
     description: 'Legacy edition with classic Inkotanyi design. Timeless appeal.',
     category: 'tshirts',
     images: [
@@ -159,7 +159,7 @@ export const products: Product[] = [
     id: '10',
     code: 'IS90-010',
     name: 'INKOTANYI SL',
-    price: 18000,
+    price: 16000,
     description: 'Street lifestyle edition. Urban meets heritage.',
     category: 'tshirts',
     images: [
@@ -176,7 +176,7 @@ export const products: Product[] = [
     id: '11',
     code: 'IS90-011',
     name: 'AM',
-    price: 18000,
+    price: 16000,
     description: 'Bold statement piece. Stand out with confidence.',
     category: 'tshirts',
     images: [
@@ -193,7 +193,7 @@ export const products: Product[] = [
     id: '12',
     code: 'IS90-012',
     name: 'IAM',
-    price: 18000,
+    price: 16000,
     description: 'Premium design with powerful messaging. Be yourself.',
     category: 'tshirts',
     images: [
@@ -210,7 +210,7 @@ export const products: Product[] = [
     id: '13',
     code: 'IS90-013',
     name: 'REALLY',
-    price: 18000,
+    price: 16000,
     description: 'Bold statement design. Express yourself.',
     category: 'tshirts',
     images: [
@@ -227,7 +227,7 @@ export const products: Product[] = [
     id: '14',
     code: 'IS90-014',
     name: 'BSL',
-    price: 18000,
+    price: 16000,
     description: 'Modern streetwear design with clean aesthetics.',
     category: 'tshirts',
     images: [
@@ -244,7 +244,7 @@ export const products: Product[] = [
     id: '15',
     code: 'IS90-015',
     name: 'INK GALLERY',
-    price: 18000,
+    price: 16000,
     description: 'Gallery edition featuring artistic Inkotanyi design.',
     category: 'tshirts',
     images: [
@@ -261,7 +261,7 @@ export const products: Product[] = [
     id: '16',
     code: 'IS90-016',
     name: 'INK LEGACY',
-    price: 18000,
+    price: 16000,
     description: 'Legacy collection with classic design elements.',
     category: 'tshirts',
     images: [
@@ -278,7 +278,7 @@ export const products: Product[] = [
     id: '17',
     code: 'IS90-017',
     name: 'LEGACY',
-    price: 18000,
+    price: 16000,
     description: 'Timeless design representing heritage and tradition.',
     category: 'tshirts',
     images: [
@@ -295,7 +295,7 @@ export const products: Product[] = [
     id: '18',
     code: 'IS90-018',
     name: 'MANY',
-    price: 18000,
+    price: 16000,
     description: 'Bold statement piece for those who stand out.',
     category: 'tshirts',
     images: [
@@ -312,7 +312,7 @@ export const products: Product[] = [
     id: '19',
     code: 'IS90-019',
     name: 'SAVE',
-    price: 18000,
+    price: 16000,
     description: 'Premium design with meaningful message.',
     category: 'tshirts',
     images: [
@@ -329,7 +329,7 @@ export const products: Product[] = [
     id: '20',
     code: 'IS90-020',
     name: 'URW',
-    price: 18000,
+    price: 16000,
     description: 'Bold design with distinctive style. Stand out from the crowd.',
     category: 'tshirts',
     images: [
@@ -346,7 +346,7 @@ export const products: Product[] = [
     id: '21',
     code: 'IS90-021',
     name: 'UMURAGE',
-    price: 18000,
+    price: 16000,
     description: 'Premium design with powerful messaging. Heritage meets modern.',
     category: 'tshirts',
     images: [
