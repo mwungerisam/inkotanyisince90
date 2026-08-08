@@ -61,8 +61,52 @@ const router = useRouter();
 
     window.addEventListener('wheel', handleWheel, { passive: false });
 
+    // Touch / swipe navigation for mobile devices
+    let touchStartY = 0;
+    let touchDelta = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+      touchDelta = 0;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      touchDelta = e.touches[0].clientY - touchStartY;
+    };
+
+    const handleTouchEnd = () => {
+      if (isNavigatingRef.current) return;
+      const total = touchDelta;
+      if (Math.abs(total) > 50) {
+        isNavigatingRef.current = true;
+        const currentIndex = products.findIndex((p) => p.id === product.id);
+        if (total < 0) {
+          // swipe up -> next
+          const nextIndex = (currentIndex + 1) % products.length;
+          router.push(`/product/${products[nextIndex].id}`);
+        } else {
+          // swipe down -> prev
+          const prevIndex = currentIndex === 0 ? products.length - 1 : currentIndex - 1;
+          router.push(`/product/${products[prevIndex].id}`);
+        }
+
+        setTimeout(() => {
+          isNavigatingRef.current = false;
+        }, 300);
+      }
+      touchStartY = 0;
+      touchDelta = 0;
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+
     return () => {
       window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }

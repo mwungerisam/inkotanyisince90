@@ -10,13 +10,14 @@ import { useProductView } from '@/context/ProductViewContext';
 interface ProductCatalogProps {
   category?: Product['category'];
   newOnly?: boolean;
+  compact?: boolean;
 }
 
-export default function ProductCatalog({ category, newOnly = false }: ProductCatalogProps) {
+export default function ProductCatalog({ category, newOnly = false, compact = false }: ProductCatalogProps) {
   // Hydration-safe: start with the shipped catalogue, then load any admin-overridden
   // products from localStorage inside useEffect to avoid hydration mismatches.
   const [products, setProducts] = useState<Product[]>(() => getStoredProducts());
-  const { isExpanded } = useProductView();
+  const { viewState } = useProductView();
 
   useEffect(() => {
     setProducts(getStoredProducts());
@@ -34,5 +35,5 @@ export default function ProductCatalog({ category, newOnly = false }: ProductCat
     return true;
   });
 
-  return <ProductGrid products={filteredProducts} isExpanded={!category && !newOnly && isExpanded} />;
+  return <ProductGrid products={filteredProducts} viewState={viewState} compact={compact} />;
 }

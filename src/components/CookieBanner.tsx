@@ -135,7 +135,7 @@ export default function CookieBanner() {
               </button>
             </form>
 
-            <button aria-label="Close cookie banner" onClick={decline} className="subscribe-close" style={{ position: 'absolute', right: 14, top: 14 }}>
+            <button aria-label="Close cookie banner" onClick={decline} className="subscribe-close" style={{ position: 'absolute', right: 12, top: 12, zIndex: 10001 }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                 <path d="M18 6L6 18M6 6l12 12" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -155,12 +155,13 @@ export default function CookieBanner() {
         .subscribe-btn { background: #000; color: #fff; padding: 14px 16px; border: none; border-radius: 0; text-transform: uppercase; font-weight: 800; letter-spacing: 0.22em; cursor: pointer; transition: transform .06s ease, background .12s ease; }
         .subscribe-btn:hover { background: #111; transform: translateY(-1px); }
         .subscribe-btn:active { transform: translateY(0); }
-        .subscribe-close { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,0.08); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 12px 24px rgba(0,0,0,0.09); cursor: pointer; transition: transform .08s ease, box-shadow .12s ease, background .12s ease; }
+        .subscribe-close { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,0.08); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 12px 24px rgba(0,0,0,0.09); cursor: pointer; transition: transform .08s ease, box-shadow .12s ease, background .12s ease; z-index: 10001; }
         .subscribe-close:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.08); }
         .subscribe-close:focus { outline: 3px solid rgba(17,24,39,0.06); outline-offset: 2px; }
         @media (max-width: 480px) {
           div[style] { bottom: 32px !important; }
           .subscribe-btn { padding: 12px 14px; }
+          .subscribe-close { right: 8px !important; top: 8px !important; width: 40px !important; height: 40px !important; }
         }
       `}</style>
     </div>

@@ -19,7 +19,7 @@ export default function TshirtsPage() {
     <main className="flex-1 pt-36 md:pt-40 pb-16">
       <div className="max-w-[1800px] mx-auto px-4 md:px-8 lg:px-12">
         <h1 className="text-xs tracking-[0.15em] mb-8">TSHIRTS</h1>
-        <ProductGrid products={tshirts} />
+        <ProductGrid products={tshirts} compact />
       </div>
     </main>
   );

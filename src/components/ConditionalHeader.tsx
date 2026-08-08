@@ -33,5 +33,10 @@ export default function ConditionalHeader() {
     return null;
   }
 
-  return <Header />;
+  return (
+    <>
+      <Header />
+      <div className="h-36 md:h-40" />
+    </>
+  );
 }

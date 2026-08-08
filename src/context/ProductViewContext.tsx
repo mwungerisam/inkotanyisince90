@@ -3,21 +3,26 @@
 import { createContext, useContext, useState } from 'react';
 
 interface ProductViewContextType {
-  isExpanded: boolean;
-  toggleProductView: () => void;
+  viewState: 0 | 1 | 2;
+  nextViewState: () => void;
+  resetViewState: () => void;
 }
 
 const ProductViewContext = createContext<ProductViewContextType | undefined>(undefined);
 
 export function ProductViewProvider({ children }: { children: React.ReactNode }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [viewState, setViewState] = useState<0 | 1 | 2>(0);
 
-  const toggleProductView = () => {
-    setIsExpanded((currentView) => !currentView);
+  const nextViewState = () => {
+    setViewState((currentState) => (currentState < 2 ? (currentState + 1) as 1 | 2 : currentState));
+  };
+
+  const resetViewState = () => {
+    setViewState(0);
   };
 
   return (
-    <ProductViewContext.Provider value={{ isExpanded, toggleProductView }}>
+    <ProductViewContext.Provider value={{ viewState, nextViewState, resetViewState }}>
       {children}
     </ProductViewContext.Provider>
   );

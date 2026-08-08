@@ -12,16 +12,25 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { itemCount } = useCart();
-  const { isExpanded, toggleProductView } = useProductView();
+  const { viewState, nextViewState, resetViewState } = useProductView();
   const isOrderConfirmationPage = pathname === '/order-confirmation';
 
   const handleProductViewToggle = () => {
-    toggleProductView();
-
-    if (pathname !== '/') {
-      router.push('/');
+    if (viewState === 0) {
+      nextViewState();
+    } else {
+      resetViewState();
     }
   };
+
+  const navLinks = [
+    { name: 'NEW', href: '/new' },
+    { name: 'MENS', href: '/mens' },
+    { name: 'WOMENS', href: '/womens' },
+    { name: 'ACCESSORIES', href: '/accessories' },
+  ];
+
+  const activePath = pathname === '/' ? 'new' : pathname.split('/')[1];
 
   return (
     <>
@@ -40,13 +49,17 @@ export default function Header() {
               <button
                 onClick={handleProductViewToggle}
                 className="text-gray-900 p-4 hover:bg-gray-50 rounded-lg transition-colors"
-                aria-label={isExpanded ? 'Show standard product view' : 'Show larger product view'}
+                aria-label={viewState === 0 ? 'Show larger product view' : 'Return to normal product view'}
               >
-                <Plus className="w-5 h-5" strokeWidth={2} />
+                {viewState === 0 ? (
+                  <Plus className="w-5 h-5" strokeWidth={2} />
+                ) : (
+                  <ChevronLeft className="w-5 h-5" strokeWidth={2} />
+                )}
               </button>
             )}
 
-            <nav className="hidden md:block">
+            <div className="flex flex-col items-center justify-center gap-3">
               <Link
                 href="/"
                 className="relative block h-9 w-[72px] md:h-10 md:w-[80px]"
@@ -62,24 +75,23 @@ export default function Header() {
                   className="object-contain"
                 />
               </Link>
-            </nav>
 
-            {/* Mobile logo */}
-            <Link
-              href="/"
-              className="md:hidden relative block h-8 w-16"
-              aria-label="INKOTANYISINCE90 home"
-            >
-              <Image
-                src="/logo.png"
-                alt="INKOTANYISINCE90"
-                fill
-                sizes="64px"
-                quality={90}
-                priority
-                className="object-contain"
-              />
-            </Link>
+              <nav aria-label="Primary navigation" className="flex md:flex items-center gap-4 md:gap-8 overflow-x-auto whitespace-nowrap">
+                {navLinks.map((link) => {
+                  const isActive = activePath === link.href.split('/')[1];
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`text-[9px] md:text-[10px] tracking-[0.18em] uppercase transition-colors ${isActive ? 'font-semibold text-black' : 'font-light text-gray-400 hover:text-gray-700'}`}
+                    >
+                      {link.name}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
 
             <button
               onClick={() => router.push('/cart')}
